@@ -9,6 +9,7 @@ import restaurantRegisterRouter from "./src/modules/restaurants/restaurant_regis
 import resownerRegisterRouter from "./src/modules/restaurants/restaurantowner_registration.js";
 import loginRouter from "./src/middleware/auth.js";
 import driverRegisterRouter from "./src/modules/drivers/driver_registration.js";
+import getuserprofile from "./src/modules/users/user_profile.js";
 
 dotenv.config();
 
@@ -28,6 +29,7 @@ app.use("/restaurantowner/register", resownerRegisterRouter);
 app.use("/restaurant/register", tokenverify, restaurantRegisterRouter);
 app.use("/auth/login", loginRouter);
 app.use("/driver/register", driverRegisterRouter);
+app.use("/userdetails", tokenverify, getuserprofile);
 
 app.get("/", (req, res) => {
     res.send("The Weeknd is the GOAT");

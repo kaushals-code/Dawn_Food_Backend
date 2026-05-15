@@ -6,7 +6,7 @@ import db from "../config/db.js";
 
 const loginRouter = express.Router();
 
-loginRouter.get("/", async (req, res) => {
+loginRouter.post("/", async (req, res) => {
 
     try {
 
@@ -25,8 +25,7 @@ loginRouter.get("/", async (req, res) => {
                 WHERE email = $1
             `;
 
-        }
-        else if (type === "phone") {
+        } else if (type === "phone") {
 
             value = req.body.phone;
 

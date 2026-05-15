@@ -1,5 +1,4 @@
 
-
 select * from users
 select * from user_profiles
 select * from user_addresses 
@@ -11,13 +10,9 @@ select * from restaurant_addresses
 select * from drivers
 select * from delivery_assignments
 
-
-
 -- drop table driver_locations
 
 -- truncate table restaurants, restaurant_addresses restart
-
-select * from restaurant
 
 -- select id from users where email = 'kaushal21gs@gmail.com'
 
