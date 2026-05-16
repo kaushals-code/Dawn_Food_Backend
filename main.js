@@ -12,6 +12,7 @@ import driverRegisterRouter from "./src/modules/drivers/driver_registration.js";
 
 // For restaurants
 import restaurantRegisterRouter from "./src/modules/restaurants/restaurant_registration.js";
+import restaurantUpdateRouter from "./src/modules/restaurants/restaurant_update.js";
 
 // For update and get user profiles
 import getuserprofile from "./src/modules/users/user_profile.js";
@@ -37,6 +38,7 @@ app.use("/auth/login", loginRouter);
 app.use("/driver/register", driverRegisterRouter);
 app.use("/userdetails", tokenverify, getuserprofile);
 
+app.use("/restaurant/update", tokenverify, restaurantUpdateRouter);
 app.use("/userdetails/update", tokenverify, updateuserprofile);
 
 app.get("/", (req, res) => {

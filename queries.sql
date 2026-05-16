@@ -1,4 +1,5 @@
 
+
 select * from users
 select * from user_profiles
 select * from user_addresses 
@@ -11,6 +12,11 @@ select * from drivers
 select * from delivery_assignments
 
 -- drop table driver_locations
+
+alter table restaurants
+alter column cuisine type text
+
+select * from users where id = 1
 
 -- truncate table restaurants, restaurant_addresses restart
 

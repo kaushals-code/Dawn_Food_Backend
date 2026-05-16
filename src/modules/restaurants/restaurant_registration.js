@@ -8,8 +8,8 @@ restaurantRegisterRouter.post("/", async (req, res) => {
 
     const { user_id, role } = req.user;
 
-    console.log("Restaurant registration request received from user ID:", user_id);
-    console.log("User role from token:", role);
+    // console.log("Restaurant registration request received from user ID:", user_id);
+    // console.log("User role from token:", role);
 
     if (role !== "res_owner") {
         return res.status(403).json({
@@ -52,9 +52,9 @@ restaurantRegisterRouter.post("/", async (req, res) => {
 
         }
 
-        const { full_name } = result.rows[0];
+        const { full_name, cuisine } = result.rows[0];
 
-        result = await db.query("insert into restaurants (owner_id, name, phone, email) values ($1, $2, $3, $4) returning id", [user_id, full_name, phone, email]);
+        result = await db.query("insert into restaurants (owner_id, name, phone, email, cuisine) values ($1, $2, $3, $4, $5) returning id", [user_id, full_name, phone, email, cuisine]);
 
         const res_id = result.rows[0].id;
         const { address, lat, lng, city } = req.body;
