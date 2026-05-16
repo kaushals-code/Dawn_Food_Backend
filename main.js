@@ -18,6 +18,10 @@ import restaurantUpdateRouter from "./src/modules/restaurants/restaurant_update.
 import getuserprofile from "./src/modules/users/user_profile.js";
 import updateuserprofile from "./src/middleware/users_update.js";
 
+// For menu management
+import createMenuCategoryRouter from "./src/modules/menu/addcategory.js";
+import addItemMenuRouter from "./src/modules/menu/additem_menu.js";
+
 dotenv.config();
 
 const app = express();
@@ -31,15 +35,21 @@ db.connect().catch(err => {
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
+// For all logins
+app.use("/auth/login", loginRouter);
+app.use("/userdetails", tokenverify, getuserprofile);
+app.use("/restaurant/update", tokenverify, restaurantUpdateRouter);
+app.use("/userdetails/update", tokenverify, updateuserprofile);
+
+// For all registrations
 app.use("/auth/register", userregroutes);
 app.use("/restaurantowner/register", resownerRegisterRouter);
 app.use("/restaurant/register", tokenverify, restaurantRegisterRouter);
-app.use("/auth/login", loginRouter);
 app.use("/driver/register", driverRegisterRouter);
-app.use("/userdetails", tokenverify, getuserprofile);
 
-app.use("/restaurant/update", tokenverify, restaurantUpdateRouter);
-app.use("/userdetails/update", tokenverify, updateuserprofile);
+// For menu related end points
+app.use("/menu/addcategory", tokenverify, createMenuCategoryRouter);
+app.use("/menu/additem", tokenverify, addItemMenuRouter);
 
 app.get("/", (req, res) => {
     res.send("The Weeknd is the GOAT");

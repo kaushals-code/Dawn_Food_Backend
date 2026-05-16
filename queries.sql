@@ -1,5 +1,4 @@
 
-
 select * from users
 select * from user_profiles
 select * from user_addresses 
@@ -7,16 +6,23 @@ select * from user_addresses
 select * from restaurants
 select * from restaurant_addresses
 
--- Drivefr status can be true (no assignments) or false (assigned to a order)
 select * from drivers
 select * from delivery_assignments
 
+select * from menu_items
+select * from menu_categories
+
+
+
+-- alter table menu_categories 
+-- drop column image_url
+
 -- drop table driver_locations
 
-alter table restaurants
-alter column cuisine type text
+-- alter table restaurants
+-- alter column cuisine type text
 
-select * from users where id = 1
+-- select * from users where id = 1
 
 -- truncate table restaurants, restaurant_addresses restart
 
