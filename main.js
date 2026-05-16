@@ -4,12 +4,18 @@ import express from "express";
 import db from "./src/config/db.js";
 import tokenverify from "./src/middleware/tokenverify.js";
 
-import userregroutes from "./src/modules/users/user_registration.js";
-import restaurantRegisterRouter from "./src/modules/restaurants/restaurant_registration.js";
-import resownerRegisterRouter from "./src/modules/restaurants/restaurantowner_registration.js";
+// For login and registration
 import loginRouter from "./src/middleware/auth.js";
+import userregroutes from "./src/modules/users/user_registration.js";
+import resownerRegisterRouter from "./src/modules/restaurants/restaurantowner_registration.js";
 import driverRegisterRouter from "./src/modules/drivers/driver_registration.js";
+
+// For restaurants
+import restaurantRegisterRouter from "./src/modules/restaurants/restaurant_registration.js";
+
+// For update and get user profiles
 import getuserprofile from "./src/modules/users/user_profile.js";
+import updateuserprofile from "./src/middleware/users_update.js";
 
 dotenv.config();
 
@@ -30,6 +36,8 @@ app.use("/restaurant/register", tokenverify, restaurantRegisterRouter);
 app.use("/auth/login", loginRouter);
 app.use("/driver/register", driverRegisterRouter);
 app.use("/userdetails", tokenverify, getuserprofile);
+
+app.use("/userdetails/update", tokenverify, updateuserprofile);
 
 app.get("/", (req, res) => {
     res.send("The Weeknd is the GOAT");
