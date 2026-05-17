@@ -62,4 +62,62 @@ getFullMenu.get("/:id", async (req, res) => {
 
 });
 
+getFullMenu.get("/:id/:category", async (req, res) => {
+
+    const res_id = req.params.id;
+    const cat = req.params.category;
+
+    try {
+
+        const checkCat = await db.query(
+            `select * from menu_categories where name = $1`, [cat]
+        );
+
+        if (checkCat.rows[0].length == 0) {
+            res.status(501).send({
+                message: "No such category found!"
+            })
+        }
+
+        const result = await db.query(
+            `select json_build_object(
+                'restaurant', r.name,
+                'category', c.name,
+                'items', ( 
+                    select 
+                    json_agg(
+                        json_build_object(
+                            'name', i.name, 
+                            'price', i.base_price 
+                        )
+                    ) 
+                    from menu_items i 
+                    where i.category_id = (
+                        select id from menu_categories where name = $1
+                    )
+                    group by c.name
+                ) 
+            ) as menu
+            from restaurants r
+            join menu_categories c 
+            on r.id = c.restaurant_id
+            where r.id = $2
+            `,
+            [cat, res_id]
+        );
+
+        return res.status(201).send(result.rows[0]);
+
+
+    } catch (err) {
+
+        return res.status(500).send({
+            messgae: 'Internal Server Error',
+            error: err.message
+        });
+
+    }
+
+});
+
 export default getFullMenu;

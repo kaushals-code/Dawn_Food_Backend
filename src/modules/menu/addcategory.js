@@ -38,6 +38,16 @@ createMenuCategoryRouter.post("/", async (req, res) => {
             });
         }
 
+        const checkIfThere = await db.query(
+            `select * from menu_categories where name = $1 && restaurand_id = $2`, [category_name, restaurant_id]
+        )
+
+        if (checkIfThere.rows[0].length > 0) {
+            return res.status(201).send({
+                message: "Category already exists!"
+            })
+        }
+
         const categoryResult = await db.query(
             `INSERT INTO menu_categories
             (restaurant_id, name)
