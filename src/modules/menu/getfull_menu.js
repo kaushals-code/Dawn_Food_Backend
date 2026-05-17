@@ -1,0 +1,65 @@
+import express from "express";
+
+import db from "../../config/db.js";
+
+const getFullMenu = express.Router();
+
+getFullMenu.get("/:id", async (req, res) => {
+
+    const res_id = req.params.id;
+
+    // console.log(res_id);
+
+    try {
+
+        const isrestaurant = await db.query(
+            `select * from restaurants where id = $1`, [res_id]
+        );
+
+        if (isrestaurant.rows.length === 0) {
+            return res.status(404).send({
+                message: "No restaurant fonud!"
+            })
+        }
+
+        const result = await db.query(
+            `select
+            r.name,
+            json_agg(
+                json_build_object(
+                    'category', c.name,
+                    'items', (
+                        select json_agg(
+                            json_build_object(
+                                'id', m.id,
+                                'name', m.name,
+                                'price', m.base_price
+                            )
+                        )                
+                        from menu_items m 
+                        where m.category_id = c.id
+                    )
+                )
+            )  as menu
+            from restaurants r
+            join menu_categories c
+            on r.id = c.restaurant_id
+            where r.id = $1
+            group by r.name`,
+            [res_id]
+        );
+
+        res.status(200).send(result.rows[0]);
+
+    } catch (err) {
+
+        return res.status(201).send({
+            message: "Some error occurred",
+            error: err.message
+        });
+
+    }
+
+});
+
+export default getFullMenu;

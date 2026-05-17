@@ -4,9 +4,11 @@ import db from "../../config/db.js";
 
 const getuserprofile = express.Router();
 
-getuserprofile.get("/", (req, res) => {
+getuserprofile.get("/", async (req, res) => {
 
     const { user_id, role } = req.user;
+
+    console.log(user_id, role);
 
     let email, phone, user_role, created_at;
     let full_name, dob, gender;
@@ -15,24 +17,30 @@ getuserprofile.get("/", (req, res) => {
 
     try {
 
-        result = db.query("select email, phone, role, created_at from users where id = $1", [user_id]);
+        result = await db.query("select email, phone, role, created_at from users where id = $1", [user_id]);
 
         email = result.rows[0].email;
         phone = result.rows[0].phone;
         user_role = result.rows[0].role;
         created_at = result.rows[0].created_at;
 
-        result = db.query("select full_name, date_of_birth, gender from user_profiles where user_id = $1", [user_id]);
+        console.log(email, phone, user_role, created_at);
+
+        result = await db.query("select full_name, date_of_birth, gender from user_profiles where user_id = $1", [user_id]);
 
         full_name = result.rows[0].full_name;
         dob = result.rows[0].date_of_birth;
         gender = result.rows[0].gender;
 
-        result = db.query("select address_line, city, state from user_addresses where user_id = $1", [user_id]);
+        console.log(full_name, dob, gender);
+
+        result = await db.query("select address_line, city, state from user_addresses where user_id = $1", [user_id]);
 
         address_line = result.rows[0].address_line;
         city = result.rows[0].city;
         state = result.rows[0].state;
+
+        console.log(address_line, city, state);
 
         return res.status(200).json({
             "email": email,
@@ -49,7 +57,7 @@ getuserprofile.get("/", (req, res) => {
 
     } catch (err) {
 
-        return res.status(500).json({ message: "Internal Server Error" });
+        return res.status(500).json({ message: "Internal Server Error", error: err.message });
 
     }
 

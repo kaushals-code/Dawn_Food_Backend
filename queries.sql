@@ -12,7 +12,9 @@ select * from delivery_assignments
 select * from menu_items
 select * from menu_categories
 
-
+select c.name, i.name from menu_categories c 
+inner join menu_items i
+on i.category_id = c.id
 
 -- alter table menu_categories 
 -- drop column image_url
