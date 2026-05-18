@@ -58,11 +58,11 @@ addItemMenuRouter.post("/", async (req, res) => {
         const category_id = categoryResult.rows[0].id;
 
         const checkItem = await db.query(
-            `selct * from menu_items where restaurant_id = $1 and category_id = $2 and name = $3`,
+            `select * from menu_items where restaurant_id = $1 and category_id = $2 and name = $3`,
             [restaurant_id, category_id, item_name]
         );
 
-        if (checkItem.rows[0].length > 0) {
+        if (checkItem.rows.length > 0) {
             return res.status(201).send({
                 message: "Item already exists in this category!"
             })

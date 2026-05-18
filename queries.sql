@@ -1,5 +1,4 @@
 
-
 select * from users
 select * from user_profiles
 select * from user_addresses 
@@ -16,6 +15,10 @@ select * from menu_categories
 select c.name, i.name from menu_categories c 
 inner join menu_items i
 on i.category_id = c.id
+
+update menu_categories
+values name = 'Breakfast'
+where restaurant_id
 
 -- alter table menu_categories 
 -- drop column image_url

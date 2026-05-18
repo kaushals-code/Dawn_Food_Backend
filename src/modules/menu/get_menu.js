@@ -83,27 +83,26 @@ getFullMenu.get("/:id/:category", async (req, res) => {
 
         const result = await db.query(
             `select json_build_object(
-                'restaurant', r.name,
-                'category', c.name,
-                'items', ( 
-                    select 
-                    json_agg(
-                        json_build_object(
-                            'name', i.name, 
-                            'price', i.base_price 
-                        )
-                    ) 
-                    from menu_items i 
-                    where i.category_id = (
-                        select id from menu_categories where name = $1
+            'restaurant', r.name,
+            'category', c.name,
+            'items',
+            (
+                select json_agg(
+                    json_build_object(
+                        'id', i.id,
+                        'name', i.name,
+                        'price', i.base_price
                     )
-                    group by c.name
-                ) 
+                )
+                from menu_items i
+                where i.category_id = c.id
+                )
             ) as menu
             from restaurants r
-            join menu_categories c 
+            join menu_categories c
             on r.id = c.restaurant_id
             where r.id = $2
+            and c.name = $1;
             `,
             [cat, res_id]
         );
