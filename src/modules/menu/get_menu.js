@@ -4,6 +4,7 @@ import db from "../../config/db.js";
 
 const getFullMenu = express.Router();
 
+// Get full menu of a restaurant
 getFullMenu.get("/:id", async (req, res) => {
 
     const res_id = req.params.id;
@@ -62,6 +63,7 @@ getFullMenu.get("/:id", async (req, res) => {
 
 });
 
+// Get full menu of a restarurant by a category
 getFullMenu.get("/:id/:category", async (req, res) => {
 
     const res_id = req.params.id;
