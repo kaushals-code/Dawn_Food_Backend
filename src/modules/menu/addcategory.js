@@ -31,6 +31,7 @@ createMenuCategoryRouter.post("/", async (req, res) => {
         const restaurant_id = restaurantResult.rows[0].id;
 
         const { category_name } = req.body;
+        console.log(category_name);
 
         if (!category_name) {
             return res.status(400).json({
@@ -39,10 +40,10 @@ createMenuCategoryRouter.post("/", async (req, res) => {
         }
 
         const checkIfThere = await db.query(
-            `select * from menu_categories where name = $1 && restaurand_id = $2`, [category_name, restaurant_id]
+            `select * from menu_categories where name = $1 and restaurant_id = $2`, [category_name, restaurant_id]
         )
 
-        if (checkIfThere.rows[0].length > 0) {
+        if (checkIfThere.rows.length > 0) {
             return res.status(201).send({
                 message: "Category already exists!"
             })
