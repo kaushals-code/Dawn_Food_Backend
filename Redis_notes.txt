@@ -1,0 +1,14 @@
+docker exec -it redis-server redis-cli
+for entering into the redis terminal (PING - PONG)
+
+docker run -d --name redis-server -p 6379:6379 redis
+for starting the redis image on the port and assigning it a name
+
+docker start redis-server
+to start the redis server
+
+docker rm -f redis-server
+delete the redis-server container
+
+docker ps -a
+see all the containers
