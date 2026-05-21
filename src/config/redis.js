@@ -15,7 +15,7 @@ redisClient.on("error", (err) => {
 const connectRedis = async () => {
     try {
 
-        if (!redisClient.isOpen()) {
+        if (!redisClient.isOpen) {
             await redisClient.connect();
         }
 
@@ -32,4 +32,4 @@ const connectRedis = async () => {
 export {
     redisClient,
     connectRedis
-}
+};

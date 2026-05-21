@@ -2,6 +2,7 @@ import dotenv from "dotenv";
 import express from "express";
 
 import db from "./src/config/db.js";
+import { connectRedis } from "./src/config/redis.js";
 import tokenverify from "./src/middleware/tokenverify.js";
 
 // For login and registration
@@ -26,6 +27,9 @@ import editMenu from "./src/modules/menu/edit_menu.js";
 import deleteCategoryRouter from "./src/modules/menu/deletein_menu.js";
 import deleteItemRouter from "./src/modules/menu/deleteitem_menu.js";
 
+// For cart management
+import cartItemAddRouter from "./src/modules/cart/additem_cart.js";
+
 dotenv.config();
 
 const app = express();
@@ -35,6 +39,7 @@ db.connect().catch(err => {
     console.error("Database connection failed:", err);
     process.exit(1);
 });
+connectRedis();
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
@@ -58,6 +63,9 @@ app.use("/fullmenu", getFullMenu);
 app.use("/editmenu", tokenverify, editMenu);
 app.use("/delinmenu", tokenverify, deleteCategoryRouter);
 app.use("/delitemmenu", tokenverify, deleteItemRouter);
+
+// For cart items
+app.use("/addtocart", tokenverify, cartItemAddRouter);
 
 
 app.get("/", (req, res) => {
