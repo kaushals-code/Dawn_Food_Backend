@@ -103,18 +103,3 @@ cartItemAddRouter.post("/", async (req, res) => {
 });
 
 export default cartItemAddRouter;
-
-/**
- * 
- * first get the new item from the input
- * 
- * check whether the item_id is already present in the cart else return
- *
- * check whether the item is present in the menu_items for the specific restaurant
- * 
- * check whether the item is from the present restaurant only
- * 
- * then add it to the redis server
- * 
- * 
- */
