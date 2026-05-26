@@ -18,7 +18,7 @@ getUserCart.get("/", async (req, res) => {
             });
         }
 
-        console.log(result);
+        // console.log(result);
 
         return res.status(201).send(JSON.parse(result));
 
