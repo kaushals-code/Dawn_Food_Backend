@@ -11,7 +11,7 @@ cartItemAddRouter.post("/", async (req, res) => {
 
     let cur = await redisClient.get(user_id).then((got) => JSON.parse(got));
 
-    // console.log(cur);
+    console.log(cur);
 
     const { new_item_id, new_res_id } = req.body;
 
