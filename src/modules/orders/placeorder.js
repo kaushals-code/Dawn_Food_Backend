@@ -32,17 +32,39 @@ placeOrderForUser.post("/", async (req, res) => {
 
         const allmenu = allResItems.rows;
 
+        let total = 0;
+
         usercart.forEach(element => {
 
-            let l = 0, r = usercart.length;
+            let got = false;
+            allmenu.forEach(item => {
+                if (item.id == element) {
+                    total += item.base_price;
+                    got = true;
+                    break;
+                }
+            });
 
-            while (l <= r) {
+            if (got === false) {
+                return res.status(407).send({
+                    message: "An item in the cart is not avaliable in the restaurant"
+                });
+            } // Confirmed that all the items are present int he cart
 
-                let mid = l + (r - l) / 2;
+            // Got the total price also
+            // Need to add the delivery charges also according to the distance. 
+            let delivery_fee = 50;
+            let tax = 0.18 * total;
 
-                // if()
+            // Add discount of 10%
+            let discount = (0.15 * total);
 
-            }
+            const addOrder = db.query(
+                `insert into orders(customer_id, restaurant_id, 
+                driver_id, sub_total, tax, delivery_fee, discount_amount, total)
+                values ($1, $2, $3, $4, $5, $6, $7, $8)`,
+                [user_id, res_id, driver_id, total,]
+            );
 
         });
 
