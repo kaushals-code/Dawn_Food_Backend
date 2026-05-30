@@ -20,6 +20,15 @@ select * from order_status_history
 -- inner join menu_items i
 -- on i.category_id = c.id
 
+-- ALTER TABLE order_items
+-- DROP CONSTRAINT order_items_menu_item_id_fkey;
+
+alter table order_items
+drop column special_instructions
+
+-- alter table order_items
+-- add column items_order text
+
 -- update menu_categories
 -- values name = 'Breakfast'
 -- where restaurant_id

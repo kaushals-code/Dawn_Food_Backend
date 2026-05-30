@@ -56,14 +56,26 @@ placeOrderForUser.post("/", async (req, res) => {
             let delivery_fee = 50;
             let tax = 0.18 * total;
 
+            // driver_id need to be get from another middleware for now let it be the driver with driver_id = 1
+            const driver_id = 1;
+
             // Add discount of 10%
             let discount = (0.15 * total);
 
-            const addOrder = db.query(
+            const addOrder = await db.query(
                 `insert into orders(customer_id, restaurant_id, 
                 driver_id, sub_total, tax, delivery_fee, discount_amount, total)
                 values ($1, $2, $3, $4, $5, $6, $7, $8)`,
-                [user_id, res_id, driver_id, total,]
+                [user_id, res_id, driver_id, total, tax, delivery_fee, discount]
+            );
+
+            const order_id = addOrder.rows[0].id;
+
+            const addOrderItems = await db.query(
+                `insert into order_items (order_id, 
+                items_order) values
+                ($1, $2)`,
+                [order_id, cart]
             );
 
         });
