@@ -2,6 +2,7 @@ import express from "express"
 
 import db from "../../config/db.js";
 import { redisClient } from "../../config/redis.js";
+import getDriver from "../../middleware/assigndriver.js";
 
 const placeOrderForUser = express.Router();
 
@@ -9,7 +10,9 @@ placeOrderForUser.post("/", async (req, res) => {
 
     const { user_id } = req.user;
 
-    const usercart = redisClient.get(user_id);
+    const usercart = JSON.parse(await redisClient.get(user_id));
+    console.log(usercart);
+    console.log(typeof usercart);
 
     if (usercart === null) {
         return res.status(204).send({
@@ -34,51 +37,60 @@ placeOrderForUser.post("/", async (req, res) => {
 
         let total = 0;
 
-        usercart.forEach(element => {
-
+        for (const element of cart) {
             let got = false;
-            allmenu.forEach(item => {
+
+            for (const item of allmenu) {
                 if (item.id == element) {
-                    total += item.base_price;
+                    console.log(item.base_price);
+                    console.log(typeof item.base_price);
+                    total += parseFloat(item.base_price);
                     got = true;
                     break;
                 }
-            });
+            }
 
-            if (got === false) {
+            if (!got) {
                 return res.status(407).send({
-                    message: "An item in the cart is not avaliable in the restaurant"
+                    message: "An item in the cart is not available in the restaurant"
                 });
-            } // Confirmed that all the items are present int he cart
+            }
+        }
 
-            // Got the total price also
-            // Need to add the delivery charges also according to the distance. 
-            let delivery_fee = 50;
-            let tax = 0.18 * total;
+        // Got the total price also
+        // Need to add the delivery charges also according to the distance. 
+        let delivery_fee = 50;
+        let tax = 0.18 * total;
 
-            // driver_id need to be get from another middleware for now let it be the driver with driver_id = 1
-            const driver_id = 1;
+        // driver_id need to be get from another middleware for now let it be the driver with driver_id = 1
+        const driver_id = await getDriver();
 
-            // Add discount of 10%
-            let discount = (0.15 * total);
+        // Add discount of 10%
+        let discount = (0.15 * total);
 
-            const addOrder = await db.query(
-                `insert into orders(customer_id, restaurant_id, 
-                driver_id, sub_total, tax, delivery_fee, discount_amount, total)
-                values ($1, $2, $3, $4, $5, $6, $7, $8)`,
-                [user_id, res_id, driver_id, total, tax, delivery_fee, discount]
-            );
+        const finalTotal = total + tax + delivery_fee - discount;
 
-            const order_id = addOrder.rows[0].id;
+        const addOrder = await db.query(
+            `insert into orders(customer_id, restaurant_id, 
+                driver_id, subtotal, tax, delivery_fee, discount_amount, total)
+                values ($1, $2, $3, $4, $5, $6, $7, $8)
+                returning id`,
+            [user_id, res_id, driver_id, total, tax, delivery_fee, discount, finalTotal]
+        );
 
-            const addOrderItems = await db.query(
-                `insert into order_items (order_id, 
+        const order_id = addOrder.rows[0].id;
+
+        const addOrderItems = await db.query(
+            `insert into order_items (order_id, 
                 items_order) values
                 ($1, $2)`,
-                [order_id, cart]
-            );
+            [order_id, cart]
+        );
 
-        });
+        return res.status(203).send({
+            message: "Order placed successfully"
+        })
+
 
     } catch (err) {
 

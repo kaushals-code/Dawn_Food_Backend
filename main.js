@@ -29,7 +29,10 @@ import deleteItemRouter from "./src/modules/menu/deleteitem_menu.js";
 
 // For cart management
 import cartItemAddRouter from "./src/modules/cart/additem_cart.js";
-import getUserCart from "./src/modules/cart/getitems_cart.js"
+import getUserCart from "./src/modules/cart/getitems_cart.js";
+
+// For placing the order
+import placeOrderForUser from "./src/modules/orders/placeorder.js";
 
 dotenv.config();
 
@@ -68,6 +71,9 @@ app.use("/delitemmenu", tokenverify, deleteItemRouter);
 // For cart items
 app.use("/addtocart", tokenverify, cartItemAddRouter);
 app.use("/getcart", tokenverify, getUserCart);
+
+// For ordering the cart items
+app.use("/ordercart", tokenverify, placeOrderForUser);
 
 app.get("/", (req, res) => {
     res.send("The Weeknd is the GOAT");

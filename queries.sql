@@ -14,17 +14,21 @@ select * from menu_categories
 
 select * from orders
 select * from order_items
-select * from order_status_history
+
+-- drop table order_status_history
 
 -- select c.name, i.name from menu_categories c 
 -- inner join menu_items i
 -- on i.category_id = c.id
 
+-- alter table drivers
+-- alter column status type bool
+
 -- ALTER TABLE order_items
 -- DROP CONSTRAINT order_items_menu_item_id_fkey;
 
-alter table order_items
-drop column special_instructions
+-- alter table order_items
+-- drop column special_instructions
 
 -- alter table order_items
 -- add column items_order text
