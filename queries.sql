@@ -21,6 +21,10 @@ select * from order_items
 -- inner join menu_items i
 -- on i.category_id = c.id
 
+-- SELECT column_name
+-- FROM information_schema.columns
+-- WHERE table_name = 'orders';
+
 -- alter table drivers
 -- alter column status type bool
 

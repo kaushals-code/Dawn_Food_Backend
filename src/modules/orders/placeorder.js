@@ -10,7 +10,12 @@ placeOrderForUser.post("/", async (req, res) => {
 
     const { user_id } = req.user;
 
-    const usercart = JSON.parse(await redisClient.get(user_id));
+    const raw = await redisClient.get(user_id);
+    if (!raw) {
+        return res.status(204).send({ message: "No items are added to the cart." });
+    }
+    const usercart = JSON.parse(raw);
+
     console.log(usercart);
     console.log(typeof usercart);
 
@@ -86,6 +91,8 @@ placeOrderForUser.post("/", async (req, res) => {
                 ($1, $2)`,
             [order_id, cart]
         );
+
+        await redisClient.del(String(user_id));
 
         return res.status(203).send({
             message: "Order placed successfully"

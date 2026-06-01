@@ -58,7 +58,7 @@ cartItemAddRouter.post("/", async (req, res) => {
             [res_id]
         );
 
-        if (checkRestaurant.rows.size === 0) {
+        if (checkRestaurant.rows.length === 0) {
             return res.status(404).send({
                 message: "No restaurant found"
             });
