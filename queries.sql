@@ -21,6 +21,12 @@ select * from order_items
 -- inner join menu_items i
 -- on i.category_id = c.id
 
+CREATE EXTENSION IF NOT EXISTS postgis;
+
+-- alter table drivers
+-- drop column lat,
+-- drop column lng
+
 -- SELECT column_name
 -- FROM information_schema.columns
 -- WHERE table_name = 'orders';
