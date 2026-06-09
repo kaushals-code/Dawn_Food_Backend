@@ -6,6 +6,8 @@ const getAllItemsOfCart = express.Router();
 
 getAllItemsOfCart.get("/", async (req, res) => {
 
+    const { user_id, role } = req.user;
+
 });
 
 export default getAllItemsOfCart;
