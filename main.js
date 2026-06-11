@@ -29,7 +29,8 @@ import deleteItemRouter from "./src/modules/menu/deleteitem_menu.js";
 
 // For cart management
 import cartItemAddRouter from "./src/modules/cart/additem_cart.js";
-import getUserCart from "./src/modules/cart/getitems_cart.js";
+import getUserCart from "./src/modules/cart/get_cart.js";
+import getAllItemsOfCart from "./src/modules/cart/getall_items_ofcart.js";
 
 // For placing the order
 import placeOrderForUser from "./src/modules/orders/placeorder.js";
@@ -71,6 +72,7 @@ app.use("/delitemmenu", tokenverify, deleteItemRouter);
 // For cart items
 app.use("/addtocart", tokenverify, cartItemAddRouter);
 app.use("/getcart", tokenverify, getUserCart);
+app.use("/getcartitems", tokenverify, getAllItemsOfCart);
 
 // For ordering the cart items
 app.use("/ordercart", tokenverify, placeOrderForUser);
