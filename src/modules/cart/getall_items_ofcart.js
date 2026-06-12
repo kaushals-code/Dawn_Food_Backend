@@ -20,6 +20,21 @@ getAllItemsOfCart.get("/", async (req, res) => {
             });
         }
 
+        const result = await db.query(
+            `select 
+            json_build_object(
+                'restaurant', r.name,
+                select json_build_object(
+                    'id', m.id,
+                    'name', m.name,
+                    'price', m.base_price
+                ) from 
+                menu_items m
+                where 
+                restaurant_id = r.id
+            )`
+        );
+
     } catch (err) {
         return res.send({
             message: "Internal Server Error",
