@@ -11,7 +11,7 @@ getAllItemsOfCart.get("/", async (req, res) => {
 
     try {
 
-        const redisCart = await redisClient.get(user_id);
+        const redisCart = await redisClient.get(user_id).then(resp => JSON.parse(resp));
 
 
         if (redisCart === null || redisCart.cart === []) {
@@ -20,20 +20,17 @@ getAllItemsOfCart.get("/", async (req, res) => {
             });
         }
 
+        const ids = redisCart.cart.map(item => item);
+
         const result = await db.query(
-            `select 
-            json_build_object(
-                'restaurant', r.name,
-                select json_build_object(
-                    'id', m.id,
-                    'name', m.name,
-                    'price', m.base_price
-                ) from 
-                menu_items m
-                where 
-                restaurant_id = r.id
-            )`
+            `select id, name, base_price from menu_items
+            where id = any($1)`,
+            [ids]
         );
+
+        console.log(result.rows);
+
+        return res.status(200).send("Check your console dawg");
 
     } catch (err) {
         return res.send({
