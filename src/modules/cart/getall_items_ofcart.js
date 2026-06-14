@@ -30,7 +30,7 @@ getAllItemsOfCart.get("/", async (req, res) => {
 
         console.log(result.rows);
 
-        return res.status(200).send("Check your console dawg");
+        return res.status(200).send(result.rows);
 
     } catch (err) {
         return res.send({
