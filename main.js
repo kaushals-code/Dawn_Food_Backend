@@ -35,6 +35,7 @@ import getAllItemsOfCart from "./src/modules/cart/getall_items_ofcart.js";
 // For placing the order
 import placeOrderForUser from "./src/modules/orders/placeorder.js";
 
+// Importing the logger
 dotenv.config();
 
 const app = express();
@@ -46,6 +47,7 @@ db.connect().catch(err => {
 });
 connectRedis();
 
+// Middleware to parse JSON and URL-encoded data
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
