@@ -14,7 +14,6 @@ A scalable and secure backend for a food ordering application built with **Node.
 * ❤️ Favorite Food Management
 * 🔎 Search and Filter Foods
 * 🗂 Category-wise Food Listing
-* ☁ MongoDB Database Integration
 * 🛡 Protected Routes using Middleware
 * 📄 RESTful API Architecture
 
@@ -26,8 +25,6 @@ A scalable and secure backend for a food ordering application built with **Node.
 | ---------- | --------------------- |
 | Node.js    | Runtime Environment   |
 | Express.js | Backend Framework     |
-| MongoDB    | Database              |
-| Mongoose   | ODM                   |
 | JWT        | Authentication        |
 | bcrypt     | Password Hashing      |
 | dotenv     | Environment Variables |
